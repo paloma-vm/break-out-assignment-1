@@ -50,6 +50,7 @@
         }
       }
       let score = 0;
+      let lives = 3;
 
       function drawBall() {
         ctx.beginPath();
@@ -93,8 +94,8 @@
         drawBall();
         drawPaddle();
         drawScore();
+        drawLives();
         collisionDetection();
-
        
         // bounce off top wall by reversing y-axis movement
         if (y + dy < 0) {
@@ -121,13 +122,22 @@
         if (y + dy < ballRadius) {
           dy = -dy;
         } else if (y + dy > canvas.height - ballRadius) {
-          if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-          } else {
-          alert("GAME OVER");
-          document.location.reload();
-          clearInterval(interval); // Needed for Chrome to end game
-          }
+            if (x > paddleX && x < paddleX + paddleWidth) {
+              dy = -dy;
+            } else {
+                lives--;
+                if (!lives) {
+                  alert("GAME OVER");
+                  document.location.reload();
+                } else {
+                  x = canvas.width / 2;
+                  y = canvas.height - 30;
+                  dx = 2;
+                  dy = -2;
+                  paddleX = (canvas.width - paddleWidth) / 2;
+                }
+
+            }
         }
 
 
@@ -140,6 +150,9 @@
 
         x += dx;
         y += dy;
+        // causes the draw() function to call itself over and over again
+        // the browser controls the frame rate
+        requestAnimationFrame(draw); 
       }
 
       //event listeners for control buttons
@@ -187,7 +200,6 @@
                 if (score === brickRowCount * brickColumnCount) {
                   alert("YOU WIN, CONGRATULATIONS!");
                   document.location.reload();
-                  clearInterval(interval); // Needed for Chrome to end game
                 }
               }
             }
@@ -203,11 +215,14 @@
         ctx.fillText(`Score: ${score}`, 8, 20);
       }
 
+      function drawLives() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+}
 
 
-
-      const interval = setInterval(draw, 10);
-      //function will be executed within setInterval every 10 ms
+      draw();
 
     </script>
   </body>
