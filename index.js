@@ -64,7 +64,7 @@ function drawPaddle() {
 //     }
 //   }
 
-// making even and odd columns different colors
+// each row a different color
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c += 1) {
       for (let r = 0; r < brickRowCount; r += 1) {
@@ -76,10 +76,12 @@ function drawBricks() {
           ctx.beginPath();
           ctx.rect(brickX, brickY, brickWidth, brickHeight);
         //   ctx.fillStyle = '#0095DD';
-          if (c % 2 === 0) {
+          if (r / 2 === 1) {
           ctx.fillStyle = '#0095DD';
-          } else {
+          } else if (r % 2 === 0) {
             ctx.fillStyle = '#FF0000';
+          } else {
+            ctx.fillStyle = '#a89e32';
           }
           ctx.fill();
           ctx.closePath();
