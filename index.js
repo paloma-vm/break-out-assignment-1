@@ -35,25 +35,35 @@ const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 const bricks = [];
-for (let c = 0; c < brickColumnCount; c += 1) {
-  bricks[c] = [];
-  for (let r = 0; r < brickRowCount; r += 1) {
-    // bricks[c][r] = { x: 0, y: 0, status: 1 }; // old way
-    bricks[c][r] = new Brick(0, 0); // new way to make a new brick
-  }
-}
+initializeBricks();
+
 let score = 0;
 let lives = 3;
 
-function drawBall() {
-  // ball.move();
-  // ball.render();
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = objectColor;
-  ctx.fill();
-  ctx.closePath();
+// ----------------------------------------------
+// Functions
+// ----------------------------------------------
+
+function initializeBricks() {
+  for (let c = 0; c < brickColumnCount; c += 1) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r += 1) {
+      const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+      const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+      bricks[c][r] = new Brick(0, 0); // new way to make a new brick
+    }
+  }
 }
+
+// function drawBall() {
+//   // ball.move();
+//   // ball.render();
+//   ctx.beginPath();
+//   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+//   ctx.fillStyle = objectColor;
+//   ctx.fill();
+//   ctx.closePath();
+// }
 
 function drawPaddle() {
   ctx.beginPath();
@@ -66,14 +76,11 @@ function drawPaddle() {
 function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
-      if (bricks[c][r].status === 1) {
-        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
+      const brick = bricks[c][r];
+      if (brick.status === 1) {
         ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = objectColor;
+        ctx.rect(brick.x, brick.y, brick.width, brick.height);
+        ctx.fillStyle = brick.color;
         ctx.fill();
         ctx.closePath();
       }
@@ -89,10 +96,10 @@ function resetBallAndPaddle() {
   paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-function moveBall() {
-  ball.x += ball.dx;
-  ball.y += ball.dy;
-}
+// function moveBall() {
+//   ball.x += ball.dx;
+//   ball.y += ball.dy;
+// }
 
 function movePaddle() {
   // checking to see if the RT or LT keys are pressed
@@ -205,16 +212,29 @@ function drawLives() {
 //  GAME LOOP ------------------------------------------------
 
 function draw() {
+  // ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // drawBricks();
+  // drawBall();
+  // drawPaddle();
+  // drawScore();
+  // drawLives();
+  // collisionDetection();
+  // moveBall();
+  // movePaddle();
+  // collisionsWithCanvasAndPaddle();
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBricks();
-  drawBall();
-  drawPaddle();
-  drawScore();
-  drawLives();
+  bricks.render(ctx);
+  ball.render(ctx);
+  paddle.render(ctx);
+  score.render(ctx);
+  lives.render(ctx);
   collisionDetection();
-  moveBall();
-  movePaddle();
+  ball.move(ctx);
+  paddle.move(ctx);
   collisionsWithCanvasAndPaddle();
+
+
 
   // causes the draw() function to call itself over and over again
   // the browser controls the frame rate
