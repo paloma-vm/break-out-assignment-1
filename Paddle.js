@@ -5,13 +5,14 @@ class Paddle extends Sprite {
     super(x, y, width, height, color); // pass arguments to Sprite
   }
 
-  move() {
-    // checking to see if the RT or LT keys are pressed
-  if (rightPressed) {
-    paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
-  } else if (leftPressed) {
-    paddleX = Math.max(paddleX - 7, 0);
-  }
+  // move() has global variables, will not include here for now
+
+  render(ctx, canvas) {
+    ctx.beginPath();
+    ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
   }
 }
 
