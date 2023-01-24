@@ -2,10 +2,12 @@ import Ball from './Ball';
 import Brick from './Brick';
 import Paddle from './Paddle';
 import Bricks from './Bricks';
+import Score from './Score';
+import Lives from './Lives';
 
 // JavaScript code goes here
 const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getConle.xt('2d');
+const ctx = canvas.getContext('2d');
 
 // const ball = new Ball(200, 200, 10)
 // const ball = new Ball(ball.x, ball.y, ball.radius)
@@ -15,37 +17,28 @@ const ctx = canvas.getConle.xt('2d');
 // ----------------------------------------------
 // Variables
 // ----------------------------------------------
-
+const paddleHeight = 10;
+const paddleWidth = 75;
+const paddleXStart = (canvas.width - paddleWidth) / 2;
+const paddleYStart = canvas.height - paddleHeight;
 const ball = new Ball();
-const paddle = new Paddle();
+const paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight);
 
-// let paddle.x;
-
-// const ballRadius = 10;
-// const paddleHeight = 10;
-// const paddleWidth = 75;
-// const objectColor = '#0095DD';
+// let paddle.x;????
 
 let rightPressed = false;
 let leftPressed = false;
 // false because at the beginning the control buttons are not pressed
-// const brickRowCount = 3;
-// const brickColumnCount = 5;
+
 const rows = 3;
 const cols = 5;
-const brickWidth = 75;
-const brickHeight = 20;
-const brickPadding = 10;
-const brickOffsetTop = 30;
 
-
-
-const brickOffsetLeft = 30;
 const bricks = new Bricks(cols, rows);
 
-
-let score = 0;
-let lives = 3;
+// let score = 0;
+const score = Score();
+// let lives = 3;
+const lives = Lives();
 
 // ----------------------------------------------
 // Functions
@@ -108,17 +101,17 @@ function resetBallAndPaddle() {
 
 function movePaddle() {
   // checking to see if the RT or LT keys are pressed
-  if (rightPressed) {
-    paddle.x = Math.min(paddle.x + 7, canvas.width - paddle.width);
-  } else if (leftPressed) {
-    paddle.x = Math.max(paddle.x - 7, 0);
+  if (rightPressed && paddle.x < canvas.width - paddle.width) {
+    paddle.moveBy(7, 0);
+  } else if (leftPressed && paddle.x < 0) {
+    paddle.moveBy(-7, 0);
   }
 }
 
 function mouseMoveHandler(e) {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
-    paddle.x = relativeX - paddle.width / 2;
+    paddle.moveTo(relativeX - paddle.width / 2, paddleYStart);
   }
 }
 
@@ -150,8 +143,9 @@ function collisionDetection() {
         ) {
           ball.dy = -ball.dy;
           brick.status = 0;
-          score += 1;
-          if (score === bricks.rows * bricks.cols) {
+          // score.score += 1;
+          score.update();
+          if (score.score === bricks.rows * bricks.cols) {
             alert('YOU WIN, CONGRATULATIONS!');
             document.location.reload();
           }
@@ -192,7 +186,7 @@ function collisionsWithCanvasAndPaddle() {
       ball.dy = -ball.dy;
     } else {
       // lose a life
-      lives -= 1;
+      lives.loseLife();
       if (!lives) {
         alert('GAME OVER');
         document.location.reload();

@@ -1,11 +1,19 @@
-import Sprite from './Sprite';
+import Sprite from './Sprite.js';
 
 class Paddle extends Sprite {
   constructor(x = 0, y = 0, width = 75, height = 10, color = '#0095DD') {
     super(x, y, width, height, color); // pass arguments to Sprite
   }
 
-  // move() has global variables, will not include here for now
+  moveBy(dx, dy) {
+    this.x += dx;
+    this.y += dy;
+  }
+
+  moveTo(x, y) {
+    this.x += x;
+    this.y += y;
+  }
 
   render(ctx, canvas) {
     ctx.beginPath();

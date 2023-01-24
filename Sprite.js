@@ -8,6 +8,7 @@ class Sprite {
   }
 
   render(ctx) {
+    console.log('drawing brick', this.width, this.height, this.color, this.x, this.y);
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.fillStyle = this.color;
