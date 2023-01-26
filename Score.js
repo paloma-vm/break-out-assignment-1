@@ -14,7 +14,7 @@ class Score {
     // ctx.fillText(`Score: ${this.score}`, 8, 20);
   }
 
-  updatePoints() {
+  update() {
     this.score += 1;
   }
 

@@ -1,5 +1,5 @@
 class Lives {
-  constructor(x, y, lives = 3, color = 'green', font = '16px Arial') {
+  constructor(x = 70, y = 20, lives = 3, color = 'green', font = '16px Arial') {
     this.x = x;
     this.y = y;
     this.lives = lives;
@@ -13,7 +13,7 @@ class Lives {
     ctx.fillText(`Lives: ${this.lives}`, canvas.width - this.x, this.y);
   }
 
-  LoseLife() {
+  loseLife() {
     this.lives -= 1;
   }
 

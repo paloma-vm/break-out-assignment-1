@@ -1,15 +1,17 @@
-import Ball from './Ball';
-import Brick from './Brick';
-import Paddle from './Paddle';
-import Bricks from './Bricks';
-import Score from './Score';
-import Lives from './Lives';
+// import Background from './Background.js';
+import Ball from './Ball.js';
+import Brick from './Brick.js';
+import Paddle from './Paddle.js';
+import Bricks from './Bricks.js';
+import Score from './Score.js';
+import Lives from './Lives.js';
+import Background from './Background.js';
 
 // JavaScript code goes here
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-// const ball = new Ball(200, 200, 10)
+// const bouncy = new Ball(200, 200, 10);
 // const ball = new Ball(ball.x, ball.y, ball.radius)
 // b.render(ctx)
 // define x and y
@@ -21,10 +23,12 @@ const paddleHeight = 10;
 const paddleWidth = 75;
 const paddleXStart = (canvas.width - paddleWidth) / 2;
 const paddleYStart = canvas.height - paddleHeight;
+const background = new Background(0, 0, canvas.width, canvas.height);
 const ball = new Ball();
 const paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight);
 
-// let paddle.x;????
+// let x;
+// let y;
 
 let rightPressed = false;
 let leftPressed = false;
@@ -36,9 +40,9 @@ const cols = 5;
 const bricks = new Bricks(cols, rows);
 
 // let score = 0;
-const score = Score();
+const score = new Score();
 // let lives = 3;
-const lives = Lives();
+const lives = new Lives();
 
 // ----------------------------------------------
 // Functions
@@ -103,10 +107,17 @@ function movePaddle() {
   // checking to see if the RT or LT keys are pressed
   if (rightPressed && paddle.x < canvas.width - paddle.width) {
     paddle.moveBy(7, 0);
-  } else if (leftPressed && paddle.x < 0) {
+  } else if (leftPressed && paddle.x > 0) {
     paddle.moveBy(-7, 0);
   }
 }
+
+// move() {
+//   // checking to see if the RT or LT keys are pressed
+// if (rightPressed) {
+//   paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
+// } else if (leftPressed) {
+//   paddleX = Math.max(paddleX - 7, 0);
 
 function mouseMoveHandler(e) {
   const relativeX = e.clientX - canvas.offsetLeft;
@@ -134,7 +145,7 @@ function collisionDetection() {
   for (let c = 0; c < bricks.cols; c += 1) {
     for (let r = 0; r < bricks.rows; r += 1) {
       const brick = bricks.bricks[c][r];
-      if (brick.status === 1) {
+      if (brick.status === true) {
         if (
           ball.x > brick.x
                 && ball.x < brick.x + brick.width
@@ -142,7 +153,7 @@ function collisionDetection() {
                 && ball.y < brick.y + brick.height
         ) {
           ball.dy = -ball.dy;
-          brick.status = 0;
+          brick.status = false;
           // score.score += 1;
           score.update();
           if (score.score === bricks.rows * bricks.cols) {
@@ -156,6 +167,7 @@ function collisionDetection() {
 }
 
 function collisionsWithCanvasAndPaddle() {
+  // console.log('collsions with');
   // bounce off top wall by reversing y-axis movement
   if (ball.y + ball.dy < 0) {
     ball.dy = -ball.dy;
@@ -187,7 +199,7 @@ function collisionsWithCanvasAndPaddle() {
     } else {
       // lose a life
       lives.loseLife();
-      if (!lives) {
+      if (!lives.lives) {
         alert('GAME OVER');
         document.location.reload();
       } else {
@@ -226,10 +238,12 @@ function draw() {
   // clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // call helper functions
+  background.render(ctx);
   bricks.render(ctx);
   paddle.render(ctx);
+  ball.render(ctx);
   score.render(ctx);
-  lives.render(ctx);
+  lives.render(ctx, canvas);
   collisionDetection();
   ball.move(ctx);
   movePaddle();
