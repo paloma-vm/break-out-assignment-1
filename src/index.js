@@ -29,7 +29,7 @@ const cols = 5;
 
 const bricks = new Bricks(cols, rows);
 
-const scoreLabel = new GameLabel('Score: ', 8, 20, 'blue');
+const scoreLabel = new GameLabel('Score: ', 100, 20, 'blue');
 const livesLabel = new GameLabel('Lives: ', canvas.width - 70, 20, 'green');
 scoreLabel.align = 'left';
 livesLabel.align = 'right';
@@ -138,6 +138,8 @@ function collisionsWithCanvasAndPaddle() {
       livesLabel.value -= 1;
       if (livesLabel.value < 1) {
         alert('GAME OVER');
+        livesLabel.value = 3;
+        scoreLabel.value = 0;
         document.location.reload();
       } else {
         resetBallAndPaddle();
