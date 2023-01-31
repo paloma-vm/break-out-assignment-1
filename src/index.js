@@ -9,11 +9,6 @@ import GameLabel from './GameLabel';
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-// const bouncy = new Ball(200, 200, 10);
-// const ball = new Ball(ball.x, ball.y, ball.radius)
-// b.render(ctx)
-// define x and y
-
 // ----------------------------------------------
 // Variables
 // ----------------------------------------------
@@ -25,9 +20,6 @@ const background = new Background(0, 0, canvas.width, canvas.height);
 const ball = new Ball();
 const paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight);
 
-// let x;
-// let y;
-
 let rightPressed = false;
 let leftPressed = false;
 // false because at the beginning the control buttons are not pressed
@@ -37,13 +29,12 @@ const cols = 5;
 
 const bricks = new Bricks(cols, rows);
 
-// let score = 0;
-// const score = new Score();
-// let lives = 3;
-// const lives = new Lives();
-const scoreLabel = new GameLabel('Score: ', 8, 20, 'blue', 0);
-const livesLabel = new GameLabel(10, 30, 'Lives: 3');
-// scoreLabel.text = 'Score: score.score';
+const scoreLabel = new GameLabel('Score: ', 8, 20, 'blue');
+const livesLabel = new GameLabel('Lives: ', canvas.width - 70, 20, 'green');
+scoreLabel.align = 'left';
+livesLabel.align = 'right';
+scoreLabel.value = 0;
+livesLabel.value = 3;
 
 // ----------------------------------------------
 // Functions
@@ -101,11 +92,7 @@ function collisionDetection() {
         ) {
           ball.dy = -ball.dy;
           brick.status = false;
-          // score.score += 1;
-          // score.update();
           scoreLabel.value += 1;
-          // scoreLabel.text = `${score.text}: ${score.score}`;
-          // scoreLabel.text = `${score.score}`;
 
           if (scoreLabel.value === bricks.rows * bricks.cols) {
             alert('YOU WIN, CONGRATULATIONS!');
@@ -118,7 +105,6 @@ function collisionDetection() {
 }
 
 function collisionsWithCanvasAndPaddle() {
-  // console.log('collsions with');
   // bounce off top wall by reversing y-axis movement
   if (ball.y + ball.dy < 0) {
     ball.dy = -ball.dy;
@@ -149,10 +135,8 @@ function collisionsWithCanvasAndPaddle() {
       ball.dy = -ball.dy;
     } else {
       // lose a life
-      // lives.loseLife();
       livesLabel.value -= 1;
-      // if (!lives.lives) {
-      if (!livesLabel.value < 1) {
+      if (livesLabel.value < 1) {
         alert('GAME OVER');
         document.location.reload();
       } else {
@@ -172,10 +156,8 @@ function draw() {
   bricks.render(ctx);
   paddle.render(ctx);
   ball.render(ctx);
-  // score.render(ctx);
   scoreLabel.render(ctx);
   livesLabel.render(ctx);
-  // lives.render(ctx, canvas);
   collisionDetection();
   ball.move(ctx);
   movePaddle();
@@ -192,7 +174,3 @@ document.addEventListener('mousemove', mouseMoveHandler, false);
 
 resetBallAndPaddle();
 draw();
-
-// *********************************************************
-// Variables
-// *********************************************************
