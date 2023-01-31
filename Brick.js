@@ -6,7 +6,7 @@ class Brick extends Sprite {
     this.status = status; // adds a new property
   }
 
-  // render() is same as sprite, so don't have to show (I think)
+  // render() is same as sprite, so don't have to show
 }
 
 export default Brick;

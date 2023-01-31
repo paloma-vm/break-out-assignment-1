@@ -7,6 +7,16 @@ class Sprite {
     this.color = color;
   }
 
+  moveTo(x, y) {
+    this.x = x;
+    this.y = y; // be careful!! use = , not += !!!!!!!!!!
+  }
+
+  moveBy(dx, dy) {
+    this.x += dx;
+    this.y += dy;
+  }
+
   render(ctx) {
     // console.log('drawing brick', this.width, this.height, this.color, this.x, this.y);
     ctx.beginPath();
