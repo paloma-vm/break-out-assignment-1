@@ -1,11 +1,9 @@
 // import Background from './Background.js';
-import Ball from './Ball.js';
-import Brick from './Brick.js';
-import Paddle from './Paddle.js';
-import Bricks from './Bricks.js';
-import Score from './Score.js';
-import Lives from './Lives.js';
-import Background from './Background.js';
+import Ball from './Ball';
+import Paddle from './Paddle';
+import Bricks from './Bricks';
+import Background from './Background';
+import GameLabel from './GameLabel';
 
 // JavaScript code goes here
 const canvas = document.getElementById('myCanvas');
@@ -40,55 +38,16 @@ const cols = 5;
 const bricks = new Bricks(cols, rows);
 
 // let score = 0;
-const score = new Score();
+// const score = new Score();
 // let lives = 3;
-const lives = new Lives();
+// const lives = new Lives();
+const scoreLabel = new GameLabel('Score: ', 8, 20, 'blue', 0);
+const livesLabel = new GameLabel(10, 30, 'Lives: 3');
+// scoreLabel.text = 'Score: score.score';
 
 // ----------------------------------------------
 // Functions
 // ----------------------------------------------
-
-// function initializeBricks() {
-//   for (let c = 0; c < brickColumnCount; c += 1) {
-//     bricks[c] = [];
-//     for (let r = 0; r < brickRowCount; r += 1) {
-//       const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-//       const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-//       // bricks[c][r] = new Brick(brickX, brickY, this.width, this.height);
-//       // new way to make a new brick
-//       bricks[c][r] = new Brick(brickX, brickY);
-//     }
-//   }
-// }
-/** draws the bricks for each screen refresh */
-// function drawBricks() {
-//   for (let c = 0; c < brickColumnCount; c += 1) {
-//     for (let r = 0; r < brickRowCount; r += 1) {
-//       const brick = bricks[c][r];
-//       if (brick.status === 1) {
-//         brick.render(ctx);
-//       }
-//     }
-//   }
-// }
-
-// function drawBall() {
-//   // ball.move();
-//   // ball.render();
-//   ctx.beginPath();
-//   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-//   ctx.fillStyle = objectColor;
-//   ctx.fill();
-//   ctx.closePath();
-// }
-
-// function drawPaddle() {
-//   ctx.beginPath();
-//   ctx.rect(paddle.x, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-//   ctx.fillStyle = objectColor;
-//   ctx.fill();
-//   ctx.closePath();
-// }
 
 function resetBallAndPaddle() {
   ball.x = canvas.width / 2;
@@ -98,11 +57,6 @@ function resetBallAndPaddle() {
   paddle.x = (canvas.width - paddle.width) / 2;
 }
 
-// function moveBall() {
-//   ball.x += ball.dx;
-//   ball.y += ball.dy;
-// }
-
 function movePaddle() {
   // checking to see if the RT or LT keys are pressed
   if (rightPressed && paddle.x < canvas.width - paddle.width) {
@@ -111,13 +65,6 @@ function movePaddle() {
     paddle.moveBy(-7, 0);
   }
 }
-
-// move() {
-//   // checking to see if the RT or LT keys are pressed
-// if (rightPressed) {
-//   paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
-// } else if (leftPressed) {
-//   paddleX = Math.max(paddleX - 7, 0);
 
 function mouseMoveHandler(e) {
   const relativeX = e.clientX - canvas.offsetLeft;
@@ -155,8 +102,12 @@ function collisionDetection() {
           ball.dy = -ball.dy;
           brick.status = false;
           // score.score += 1;
-          score.update();
-          if (score.score === bricks.rows * bricks.cols) {
+          // score.update();
+          scoreLabel.value += 1;
+          // scoreLabel.text = `${score.text}: ${score.score}`;
+          // scoreLabel.text = `${score.score}`;
+
+          if (scoreLabel.value === bricks.rows * bricks.cols) {
             alert('YOU WIN, CONGRATULATIONS!');
             document.location.reload();
           }
@@ -198,8 +149,10 @@ function collisionsWithCanvasAndPaddle() {
       ball.dy = -ball.dy;
     } else {
       // lose a life
-      lives.loseLife();
-      if (!lives.lives) {
+      // lives.loseLife();
+      livesLabel.value -= 1;
+      // if (!lives.lives) {
+      if (!livesLabel.value < 1) {
         alert('GAME OVER');
         document.location.reload();
       } else {
@@ -209,32 +162,9 @@ function collisionsWithCanvasAndPaddle() {
   }
 }
 
-// function drawScore() {
-//   ctx.font = '16px Arial';
-//   ctx.fillStyle = objectColor;
-//   ctx.fillText(`Score: ${score}`, 8, 20);
-// }
-
-// function drawLives() {
-//   ctx.font = '16px Arial';
-//   ctx.fillStyle = objectColor;
-//   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
-// }
-
 //  GAME LOOP ------------------------------------------------
 
 function draw() {
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // drawBricks();
-  // drawBall();
-  // drawPaddle();
-  // drawScore();
-  // drawLives();
-  // collisionDetection();
-  // moveBall();
-  // movePaddle();
-  // collisionsWithCanvasAndPaddle();
-
   // clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // call helper functions
@@ -242,8 +172,10 @@ function draw() {
   bricks.render(ctx);
   paddle.render(ctx);
   ball.render(ctx);
-  score.render(ctx);
-  lives.render(ctx, canvas);
+  // score.render(ctx);
+  scoreLabel.render(ctx);
+  livesLabel.render(ctx);
+  // lives.render(ctx, canvas);
   collisionDetection();
   ball.move(ctx);
   movePaddle();
