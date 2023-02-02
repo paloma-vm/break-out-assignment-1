@@ -5,13 +5,8 @@ class Background extends Sprite {
     super(x, y, width, height, color); // pass arguments to Sprite!
   }
 
-  render(ctx) {
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.closePath();
-  }
+  // render() comes from Sprite
+
 }
 
 export default Background;

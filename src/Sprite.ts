@@ -1,4 +1,11 @@
 class Sprite {
+  x: number
+  y: number
+  width: number
+  height: number
+  color: string
+  dx: number
+  dy: number
   constructor(x = 0, y = 0, width = 100, height = 100, color = '#f00') {
     this.x = x;
     this.y = y;
@@ -7,17 +14,17 @@ class Sprite {
     this.color = color;
   }
 
-  moveTo(x, y) {
+  moveTo(x: number, y: number) {
     this.x = x;
     this.y = y; // be careful!! use = , not += !!!!!!!!!!
   }
 
-  moveBy(dx, dy) {
+  moveBy(dx: number, dy: number) {
     this.x += dx;
     this.y += dy;
   }
 
-  render(ctx) {
+  render(ctx: any) {
     // console.log('drawing brick', this.width, this.height, this.color, this.x, this.y);
     ctx.beginPath();
     ctx.rect(this.x, this.y, this.width, this.height);

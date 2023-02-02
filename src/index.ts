@@ -6,19 +6,19 @@ import Background from './Background';
 import GameLabel from './GameLabel';
 
 // JavaScript code goes here
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
+const canvas: HTMLCanvasElement = document.getElementById('myCanvas') as HTMLCanvasElement;
+const ctx: any = canvas.getContext('2d');
 
 // ----------------------------------------------
 // Variables
 // ----------------------------------------------
-const paddleHeight = 10;
-const paddleWidth = 75;
+const paddleHeight: number = 10;
+const paddleWidth: number = 75;
 const paddleXStart = (canvas.width - paddleWidth) / 2;
 const paddleYStart = canvas.height - paddleHeight;
-const background = new Background(0, 0, canvas.width, canvas.height);
-const ball = new Ball();
-const paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight);
+const background: Background = new Background(0, 0, canvas.width, canvas.height);
+const ball: Ball = new Ball();
+const paddle: Paddle = new Paddle(paddleXStart, paddleYStart, paddleWidth, paddleHeight);
 
 let rightPressed = false;
 let leftPressed = false;
@@ -27,10 +27,10 @@ let leftPressed = false;
 const rows = 3;
 const cols = 5;
 
-const bricks = new Bricks(cols, rows);
+const bricks: Bricks = new Bricks(cols, rows);
 
-const scoreLabel = new GameLabel('Score: ', 100, 20, 'blue');
-const livesLabel = new GameLabel('Lives: ', canvas.width - 70, 20, 'green');
+const scoreLabel: GameLabel = new GameLabel('Score: ', 100, 20, 'blue', 0, 'left');
+const livesLabel: GameLabel = new GameLabel('Lives: ', canvas.width - 70, 20, 'green', 3, 'right');
 scoreLabel.align = 'left';
 livesLabel.align = 'right';
 scoreLabel.value = 0;
@@ -40,7 +40,7 @@ livesLabel.value = 3;
 // Functions
 // ----------------------------------------------
 
-function resetBallAndPaddle() {
+function resetBallAndPaddle(): void {
   ball.x = canvas.width / 2;
   ball.y = canvas.height - 30;
   ball.dx = 2;
@@ -57,14 +57,14 @@ function movePaddle() {
   }
 }
 
-function mouseMoveHandler(e) {
+function mouseMoveHandler(e: any): void {
   const relativeX = e.clientX - canvas.offsetLeft;
   if (relativeX > 0 && relativeX < canvas.width) {
     paddle.moveTo(relativeX - paddle.width / 2, paddleYStart);
   }
 }
 
-function keyDownHandler(e) {
+function keyDownHandler(e: any) {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = true;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
@@ -72,7 +72,7 @@ function keyDownHandler(e) {
   }
 }
 
-function keyUpHandler(e) {
+function keyUpHandler(e: any) {
   if (e.key === 'Right' || e.key === 'ArrowRight') {
     rightPressed = false;
   } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
@@ -161,7 +161,7 @@ function draw() {
   scoreLabel.render(ctx);
   livesLabel.render(ctx);
   collisionDetection();
-  ball.move(ctx);
+  ball.move();
   movePaddle();
   collisionsWithCanvasAndPaddle();
 
