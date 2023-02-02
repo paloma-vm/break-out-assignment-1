@@ -1,4 +1,4 @@
-import Sprite from './Sprite.js';
+import Sprite from './Sprite';
 
 class Background extends Sprite {
   constructor(x = 0, y = 0, width = 100, height = 100, color = '#d6d6d6') {

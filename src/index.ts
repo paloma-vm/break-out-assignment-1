@@ -1,4 +1,3 @@
-// import Background from './Background.js';
 import Ball from './Ball';
 import Paddle from './Paddle';
 import Bricks from './Bricks';
