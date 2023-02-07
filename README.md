@@ -19,3 +19,7 @@ To run the project, open index.html with live server
 HTML, JS, ESLint, Node, npm, yarn, TypeScript
 
 linting, classes, bundling
+
+I started with the tutorial, then made classes for all the main components of the game.  Along the way I used ESLint to follow best practices according to Airbnb's standards.  
+
+Then I bundled the game to condense it and then converted it to typescript.
